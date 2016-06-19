@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @package    Boards_And_Committees
+ * @subpackage Boards_And_Committees/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
- * @author     Your Name <email@example.com>
+ * @package    Boards_And_Committees
+ * @subpackage Boards_And_Committees/includes
+ * @author     Paul Lindquist <paul.lindquist@gmail.com>
  */
-class Plugin_Name_Activator {
+class Boards_And_Committees_Activator {
 
 	/**
 	 * Short Description. (use period)
