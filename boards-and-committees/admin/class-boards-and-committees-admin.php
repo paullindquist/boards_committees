@@ -51,15 +51,70 @@ class Boards_And_Committees_Admin {
 
         $this->boards_and_committees = $boards_and_committees;
         $this->version = $version;
+        add_action( 'wp_ajax_add_committee', array( $this, 'add_committee') );
 
     }
+
+    /**
+     *	Adds a committee to the database
+     *
+     * @since    1.0.1
+     */
+    public function add_committee() {
+     global $wpdb;
+
+        $commitee_name;
+
+        $wpdb->show_errors     = true;
+        $wpdb->suppress_errors = false;
+
+
+        if(!empty($_POST['committee_name'])){
+            $committee_name = $_POST['committee_name'];
+        }
+        if(!empty($_POST['minutes'])){
+            $minutes = $_POST['minutes'];
+        }
+        if(!empty($_POST['agenda'])){
+            $agenda = $_POST['agenda'];
+        }
+
+        $insert = array(
+            'group_type' => '2',
+            'name' => $committee_name
+        );
+
+        $wpdb->insert( $wpdb->prefix .'committees', $insert );
+        echo '{committee_name:' . $committee_name . '}';
+        wp_die();
+
+    }
+
     /**
      *	Displays admin page
      *
      * @since    1.0.1
      */
     public function output_content() {
-        echo '<h2>here\'s some output<h2>';
+        Mustache_Autoloader::register();
+        global $wpdb;
+
+        $committees_sql = 'SELECT ' . $wpdb->prefix . 'committees.id AS committees_id, '. $wpdb->prefix .'committees.name AS committees_name FROM ' . $wpdb->prefix . 'committees;';
+
+        global $wpdb;
+
+        $result = $wpdb->get_results( $committees_sql,  OBJECT);
+        $wrapped_result = new stdClass();
+        $wrapped_result->result = $result;
+
+        $m = new Mustache_Engine( array(
+            'loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/views'),
+        ));
+
+        $html = '<div class="wrap form-horizontal">';
+        $html .= $m->render('boards-and-committees_settings', $wrapped_result) . "\n";
+        $html .= '</div><br/><br/>';
+        echo $html;
     }
 
 
