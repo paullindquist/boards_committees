@@ -79,6 +79,7 @@ class Boards_And_Committees_Admin {
             $agenda = $_POST['agenda'];
         }
 
+        // FIXME: 2 is committees in wp_groups table
         $insert = array(
             'group_type' => '2',
             'name' => $committee_name
@@ -98,22 +99,32 @@ class Boards_And_Committees_Admin {
     public function output_content() {
         Mustache_Autoloader::register();
         global $wpdb;
+        $active_tab_page = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'display_members';
 
-        $committees_sql = 'SELECT ' . $wpdb->prefix . 'committees.id AS committees_id, '. $wpdb->prefix .'committees.name AS committees_name FROM ' . $wpdb->prefix . 'committees;';
+        $boards_sql = 'SELECT ' . $wpdb->prefix . 'boards.id AS board_id, '. $wpdb->prefix .'boards.name AS board_name FROM ' . $wpdb->prefix . 'boards;';
+        $committees_sql = 'SELECT ' . $wpdb->prefix . 'committees.id AS committee_id, '. $wpdb->prefix .'committees.name AS committee_name FROM ' . $wpdb->prefix . 'committees;';
+        $members_sql = 'SELECT ' . $wpdb->prefix . 'members.id AS member_id, '. $wpdb->prefix .'members.name AS member_name FROM ' . $wpdb->prefix . 'members;';
 
         global $wpdb;
 
-        $result = $wpdb->get_results( $committees_sql,  OBJECT);
+        /*
+        $boards_result = $wpdb->get_results( $boards_sql,  OBJECT);
+        $members_result = $wpdb->get_results( $members_sql,  OBJECT);
+         */
+
+        $committees_result = $wpdb->get_results( $committees_sql,  OBJECT);
+
         $wrapped_result = new stdClass();
-        $wrapped_result->result = $result;
+        $wrapped_result->boards = $boards_result;
+        $wrapped_result->members = $members_result;
+        $wrapped_result->committees = $committees_result;
 
         $m = new Mustache_Engine( array(
             'loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/views'),
         ));
 
         $html = '<div class="wrap form-horizontal">';
-        $html .= $m->render('boards-and-committees_settings', $wrapped_result) . "\n";
-        $html .= '</div><br/><br/>';
+        $html .= $m->render($active_tab_page, $wrapped_result) . "\n";
         echo $html;
     }
 

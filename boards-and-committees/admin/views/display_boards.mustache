@@ -1,0 +1,30 @@
+<div id="icon-themes" class="icon32"></div>
+<h2 class="nav-tab-wrapper">
+    <a href="?page=boards_and_committees&tab=display_members" class="nav-tab">Members</a>
+    <a href="?page=boards_and_committees&tab=display_boards" class="nav-tab nav-tab-active">Boards</a>
+    <a href="?page=boards_and_committees&tab=display_boards" class="nav-tab">Committees</a>
+</h2>
+
+<p class="text-muted">
+    Pick a name for a board
+</p>
+<div class="form-group">
+    <div class="col-xs-1">
+        <button id="new_board" type="button" class="btn btn-primary">Add</button>
+    </div>
+    <div class="col-xs-11">
+        <input type="text" name="new_board_name" id="new_board_name" class="form-control"/>
+    </div>
+</div>
+{{#boards}}
+<div class="form-group">
+    <div class="col-xs-1">
+        <button type="button" class="delete_board btn btn-danger">Delete</button>
+        <input type="hidden" name="board_id" value="{{ board_id }}" class="form-control" disabled/>
+    </div>
+    <div class="col-xs-11">
+        <label for="board-{{board_id}}">board name</label>
+        <input type="text" value="{{ board_name }}" id="board-{{board_id}}" class="form-control" disabled/>
+    </div>
+</div>
+{{/boards}}
