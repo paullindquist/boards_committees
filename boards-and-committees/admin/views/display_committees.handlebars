@@ -1,0 +1,85 @@
+<div id="icon-themes" class="icon32"></div>
+<h2 class="nav-tab-wrapper">
+    <a href="?page=boards_and_committees&tab=display_members" class="nav-tab">Members</a>
+    <a href="?page=boards_and_committees&tab=display_boards" class="nav-tab">Boards</a>
+    <a href="?page=boards_and_committees&tab=display_committees" class="nav-tab nav-tab-active">Committees</a>
+</h2>
+
+<p class="text-muted">
+Pick a name for a committee
+</p>
+<div class="row">
+    <div class="col-xs-1">
+        <div class="form-group">
+            <button id="new_committee" type="button" class="btn btn-primary">Add</button>
+        </div>
+    </div>
+    <div class="col-xs-11">
+        <div class="form-group">
+            <input type="text" name="new_committee_name" id="new_committee_name" class="form-control"/>
+        </div>
+    </div>
+</div>
+<h3>Committees</h3>
+{{#each committees}}
+<div class="committee">
+    <input type="hidden" name="committee_id" value="{{ committee_id }}" class="form-control" disabled/>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            <div class="form-group">
+                <input type="text" value="{{ committee_name }}" class="committee_name form-control" />
+            </div>
+        </div>
+        <div class="col-xs-1">
+            <div class="form-group">
+                <button type="button" class="delete_committee btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-2">
+            <h4>Members</h4>
+            <div class="row">
+                <!--
+                <div class="col-xs-1">
+                    <div class="form-group">
+                        <button type="button" class="add_committee_member btn btn-primary">Add</button>
+                        <input type="hidden" name="member_id" value="{{ member_id }}" class="form-control" />
+                    </div>
+                </div>
+                -->
+                <div class="col-xs-9">
+                    <div class="form-group">
+                        <select class="add_committee_member">
+                            <option value="">Select member</option>
+                            {{#each ../members}}
+                            <option value="{{ member_id }}">{{member_name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-11">
+                {{#each members}}
+                <div class="row">
+                    <div class="col-xs-11">
+                        <div class="form-group">
+                            <input type="text" value="{{ member_name }}" id="member-{{member_id}}" class="form-control" disabled/>
+                        </div>
+                    </div>
+                    <div class="col-xs-1">
+                        <div class="form-group">
+                            <button type="button" class="delete_committee_member btn btn-danger">Delete</button>
+                            <input type="hidden" name="member_id" value="{{ member_id }}" class="form-control" disabled/>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{/each}}

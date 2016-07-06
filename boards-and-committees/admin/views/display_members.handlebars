@@ -1,0 +1,32 @@
+<div id="icon-themes" class="icon32"></div>
+<h2 class="nav-tab-wrapper">
+    <a href="?page=boards_and_committees&tab=display_members" class="nav-tab nav-tab-active">Members</a>
+    <a href="?page=boards_and_committees&tab=display_boards" class="nav-tab">Boards</a>
+    <a href="?page=boards_and_committees&tab=display_committees" class="nav-tab">Committees</a>
+</h2>
+
+<p class="text-muted">
+Add a member..
+</p>
+<div class="form-group">
+    <div class="col-sm-1">
+        <button id="new_member" type="button" class="btn btn-primary">Add</button>
+    </div>
+    <div class="col-sm-11">
+        <input type="text" name="new_member_name" id="new_member_name"/>
+    </div>
+</div>
+
+{{#members}}
+<table class="table ">
+    <tr>
+        <td>
+            <button type="button" class="delete_member btn btn-danger">Delete</button>
+            <input type="hidden" name="member_id" value="{{ member_id }}" class="form-control" disabled/>
+        </td>
+        <td>
+            <input type="text" value="{{ member_name }}" id="member-{{member_id}}" class="form-control" disabled/>
+        </td>
+    </tr>
+</table>
+{{/members}}
