@@ -15,13 +15,51 @@
 					member_id: member_id
 				},
 				success: function(data) {
-					console.log(data);
-					//window.location.reload();
+					window.location.reload();
 				}
 			});
 		});
 
-		$('.delete_committee_member').click(function() {
+		$('[name="member_name"], [name="member_role"]').on('change', function() {
+			console.log('here');
+			var committee_id = $(this).parents('.committee').find('[name="committee_id"]').val();
+			var member_elm = $(this).parents('.member');
+			var member_role = member_elm.find('[name="member_role"]').val(); 
+			var member_name = member_elm.find('[name="member_name"]').val(); 
+			var member_id = member_elm.find('[name="member_id"]').val();
+
+			$.post( {
+				url: boards_and_committees.ajaxurl,
+				data: {
+					action: 'update_committee_member',
+					committee_id: committee_id,
+					member_id: member_id,
+					member_role: member_role,
+					member_name: member_name
+				},
+				success: function(data) {
+					console.log(data);
+				}
+			});
+		});
+
+		$('.delete_committee_member').on('click', function() {
+			var committee_id = $(this).parents('.committee').find('[name="committee_id"]').val();
+			var member_id = $(this).parents('.member').find('[name="member_id"]').val();
+
+			$.post( {
+				url: boards_and_committees.ajaxurl,
+				data: {
+					action: 'delete_committee_member',
+					committee_id: committee_id,
+					member_id: member_id
+				},
+				success: function(data) {
+					window.location.reload();
+				}
+			});
+		});
+		$('.delete_committee_member').on('click', function() {
 			var committee_id = $(this).parents('.committee').find('[name="committee_id"]').val();
 			var member_id = $(this).next().val();
 
@@ -38,7 +76,7 @@
 			});
 		});
 
-		$('.delete_member').click(function() {
+		$('.delete_member').on('click', function() {
 			var member_id = $(this).next().val();
 
 			$.post( {
@@ -53,7 +91,7 @@
 			});
 		});
 
-		$('#new_member').click(function() {
+		$('#new_member').on('click', function() {
 			var member_name = $('#new_member_name').val();
 
 			$.post( {
@@ -69,7 +107,7 @@
 			});
 		});
 
-		$('#new_board').click(function() {
+		$('#new_board').on('click', function() {
 			var board_name = $('#new_board_name').val();
 			$.post( {
 				url: boards_and_committees.ajaxurl,
@@ -82,7 +120,7 @@
 				}
 			});
 		});
-		$('.delete_board').click(function() {
+		$('.delete_board').on('click', function() {
 			var board = $(this).next().val();
 			$.post( {
 				url: boards_and_committees.ajaxurl,
@@ -96,7 +134,7 @@
 			});
 		});
 
-		$('#new_committee').click(function() {
+		$('#new_committee').on('click', function() {
 			var committee_name = $('#new_committee_name').val();
 
 			$.post( {
@@ -126,7 +164,7 @@
 			});
 		});
 
-		$('.delete_committee').click(function() {
+		$('.delete_committee').on('click', function() {
 			var committee_id = $(this).parents('.committee').find('.committee_id').val();
 			$.post( {
 				url: boards_and_committees.ajaxurl,

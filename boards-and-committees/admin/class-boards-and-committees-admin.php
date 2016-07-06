@@ -92,6 +92,7 @@ class Boards_And_Committees_Admin {
 
 		add_action( 'wp_ajax_add_committee_member', array( $this, 'add_committee_member') );
 		add_action( 'wp_ajax_delete_committee_member', array( $this, 'delete_committee_member') );
+		add_action( 'wp_ajax_update_committee_member', array( $this, 'update_committee_member') );
 
 		add_action( 'wp_ajax_add_board', array( $this, 'add_board') );
 		add_action( 'wp_ajax_delete_board', array( $this, 'delete_board') );
@@ -224,6 +225,41 @@ class Boards_And_Committees_Admin {
 	}
 
 	/**
+	 *	Updates a committee from the database
+	 *
+	 * @since    1.0.1
+	 */
+	public function update_committee_member() {
+		global $wpdb;
+
+		$committee_name;
+
+		$wpdb->show_errors     = true;
+		$wpdb->suppress_errors = false;
+
+
+		if(!empty($_POST['committee_id'])) {
+			$committee_id = $_POST['committee_id'];
+			$member_id = $_POST['member_id'];
+			$member_role = $_POST['member_role'];
+
+			$wpdb->update( $wpdb->prefix .'committee_members',
+				array(
+					'role' => $member_role
+				),
+				array(
+					'member_id' => $member_id,
+					'committee_id' => $committee_id
+				)
+			);
+			echo '{ member : "' . $member_id . '", committee : "' . $committee_id . '", role : "' . $member_role . '" }';
+		} else {
+			echo '{ test : "2" }';
+		}
+		wp_die();
+	}
+
+	/**
 	 *	Adds a member to a committee or board in the database
 	 *
 	 * @since    1.0.1
@@ -349,7 +385,10 @@ class Boards_And_Committees_Admin {
 
 		$boards_sql = 'SELECT ' . $wpdb->prefix . 'boards.id AS board_id, '. $wpdb->prefix .'boards.name AS board_name FROM ' . $wpdb->prefix . 'boards;';
 
-		$members_sql = 'SELECT ' . $wpdb->prefix . 'members.id AS member_id, '. $wpdb->prefix .'members.name AS member_name, ' . $wpdb->prefix . 'committee_members.committee_id AS committee_member_id, ' . $wpdb->prefix . 'board_members.member_id AS board_member_id FROM ' . $wpdb->prefix . 'members ' .
+		$members_sql = 'SELECT ' . $wpdb->prefix . 'members.id AS member_id, '. $wpdb->prefix .'members.name AS member_name, ' . 
+			$wpdb->prefix . 'committee_members.committee_id AS committee_member_id, ' . $wpdb->prefix . 'board_members.member_id AS board_member_id, ' .
+			$wpdb->prefix . 'committee_members.role AS committee_member_role, ' . $wpdb->prefix . 'board_members.role AS board_member_role ' .
+			'FROM ' . $wpdb->prefix . 'members ' .
 			'LEFT OUTER JOIN ' . $wpdb->prefix . 'committee_members ON ' . $wpdb->prefix . 'committee_members.member_id = ' . $wpdb->prefix . 'members.id ' .
 			'LEFT OUTER JOIN ' . $wpdb->prefix . 'board_members ON ' . $wpdb->prefix . 'board_members.member_id = ' . $wpdb->prefix . 'members.id ';
 
