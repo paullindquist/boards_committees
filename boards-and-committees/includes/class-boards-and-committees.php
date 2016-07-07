@@ -170,6 +170,7 @@ class Boards_And_Committees {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		add_shortcode( 'committee_list', array( $plugin_public, 'do_shortcode' ) );
 
 	}
 
